@@ -20,13 +20,20 @@ def create_js(id)
 	"addToMyList(\"#{id}\");"
 end
 
-folder = "/Volumes/Movies/Movies/*"
-child_folders = Dir[folder].select{|file| File.ftype(file) == "directory"}.collect{|name| name.split("/").last}
+def get_movies_from_folder(folder)
+	Dir[folder].select{|file| File.ftype(file) == "directory"}.collect{|name| name.split("/").last}	
+end
 
-movies_ids = []
+def get_movies_from_file(file)
+	File.open(file).lines
+end
+
+# movies = get_movies_from_folder "/Volumes/Movies/Movies/*"
+movies = get_movies_from_file "import.txt"
+
 errors = []
 
-child_folders.each do |d| 
+movies.each do |d| 
 	r = d.match /^(.*) \((.{4})\)$/
 	if r
 		title = r[1]
